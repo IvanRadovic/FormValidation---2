@@ -2,6 +2,8 @@ import React from 'react'
 import { useForm, useFieldArray } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 
+import DefaultInput from './UI/DefaultInput.component';
+
 let renderCount = 0;
 
 
@@ -48,20 +50,12 @@ const YoutubeForm = () => {
     <div>
         <h1>Youtube form ({renderCount/2})</h1>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div className='form-control'>
-              <label htmlFor="username">Username</label>
-              <input 
-                type='text' 
-                id='username' 
-                { ...register("username", {
-                  required:{
-                    value:true,
-                    message:'Your username is required'
-                  }
-                } )} 
-              />
-              <p className='error'>{errors.username?.message}</p>
-            </div>
+            <DefaultInput
+               label="Username"
+               name="username"
+               register={register}
+               error={errors.username}
+            />
 
             <div className="form-control">
               <label htmlFor="email">Email</label>
