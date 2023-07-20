@@ -19,7 +19,9 @@ const YoutubeForm = () => {
           facebook:"",
         },
         phoneNumbers:[ "","" ],
-        phNumbers:[{ number: ""}]        
+        phNumbers:[{ number: ""}],        
+        age: 0,
+        dob: new Date()
   }
 
     /* --- For fetching user ---  */
@@ -33,7 +35,17 @@ const YoutubeForm = () => {
     
   })
 
-  const { register, control, handleSubmit, formState } = form;
+  const { 
+    register, 
+    control, 
+    handleSubmit, 
+    formState, 
+    watch, 
+    // getValues, 
+    setValue
+   } = form;
+
+
   const { errors } = formState;
 
   const { fields, append, remove } = useFieldArray({
@@ -44,11 +56,22 @@ const YoutubeForm = () => {
   const onSubmit = (data) => {
     console.log('Form submitted', data);
   }
+
+  const watchUsename = watch(["username", "email", "channel"]);
+
+  const handlerGetValues = () => {
+    console.log("GetValues: " , getValues())
+  }
+
+  const handlerSetValues = () => {
+    setValue("username", "username");
+  }
   
-  renderCount++;
+  renderCount++; 
   return (
     <div>
         <h1>Youtube form ({renderCount/2})</h1>
+        {/* <h1>WATCHED VALUE: {watchUsename}</h1> */}
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <DefaultInput
                label="Username"
@@ -150,11 +173,44 @@ const YoutubeForm = () => {
                     )}
                   </div>
                 ))}
+
+                <div className="form-control">
+                  <label htmlFor="Age">Age</label>
+                  <input 
+                    type='number'
+                    id='Age' 
+                    {...register("Age", {
+                      valueAsNumber:true,
+                      required:{
+                        value:true,
+                        message:'Age is required'
+                      }
+                    })}  
+                  />
+                  <p className='error'>{errors.age?.message}</p>
+                </div>
                 <button type='button' onClick={() => append({ number: ""})}>Add phone phone</button>
               </div>
             </div>
+            <div className="form-control">
+              <label htmlFor="Date">Date of birth:</label>
+              <input 
+                type='date'
+                id='Date' 
+                {...register("Date", {
+                  valueAsDate:true,
+                  required:{
+                    value:true,
+                    message:'Date is required'
+                  }
+                })}  
+              />
+              <p className='error'>{errors.Date?.message}</p>
+            </div>
 
             <button>Submit</button>
+            {/* <button type='button' onClick={handlerGetValues()}>Get Values</button> */}
+            <button type='button' onClick={handlerSetValues}>Set Values</button>
         </form>
         <DevTool control={control} />
     </div>
