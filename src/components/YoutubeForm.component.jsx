@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 
@@ -42,11 +42,23 @@ const YoutubeForm = () => {
     formState, 
     watch, 
     // getValues, 
-    setValue
+    setValue,
+    reset
    } = form;
 
 
-  const { errors, touchedFields, dirtyFields, isDirty,  isValid} = formState;
+  const { 
+    errors, 
+    touchedFields, 
+    dirtyFields, 
+    isDirty,  
+    isValid, 
+    isSubmitting, 
+    isSubmitted,
+    isSubmitSuccessful
+  } = formState;
+
+  console.log(isSubmitting, isSubmitted)
 
   const { fields, append, remove } = useFieldArray({
     name:'phNumbers',
@@ -70,6 +82,12 @@ const YoutubeForm = () => {
   const onError = (errors) => {
     console.log("Errors: " , errors)
   }
+
+  useEffect(() => {
+    if(isSubmitSuccessful){
+      reset()
+    }
+  }, [isSubmitSuccessful, reset])
   
   renderCount++; 
   return (
@@ -215,9 +233,10 @@ const YoutubeForm = () => {
               <p className='error'>{errors.Date?.message}</p>
             </div>
 
-            <button disabled={!isDirty || !isValid}>Submit</button>
+            <button >Submit</button>
             {/* <button type='button' onClick={handlerGetValues()}>Get Values</button> */}
             <button type='button' onClick={handlerSetValues}>Set Values</button>
+            <button type='button' onClick={() => reset()}>RESET VALUES</button>
         </form>
         <DevTool control={control} />
     </div>
