@@ -46,7 +46,7 @@ const YoutubeForm = () => {
    } = form;
 
 
-  const { errors } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty,  isValid} = formState;
 
   const { fields, append, remove } = useFieldArray({
     name:'phNumbers',
@@ -66,13 +66,17 @@ const YoutubeForm = () => {
   const handlerSetValues = () => {
     setValue("username", "username");
   }
+
+  const onError = (errors) => {
+    console.log("Errors: " , errors)
+  }
   
   renderCount++; 
   return (
     <div>
         <h1>Youtube form ({renderCount/2})</h1>
         {/* <h1>WATCHED VALUE: {watchUsename}</h1> */}
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
             <DefaultInput
                label="Username"
                name="username"
@@ -125,7 +129,10 @@ const YoutubeForm = () => {
               <input 
                 type='text'
                 id='twitter'  
-                {...register("social.twitter")}  
+                {...register("social.twitter", {
+                  disabled:watch("channel") === "",
+                  required:'Enter your Twitter account'
+                })}  
               />
             </div>
 
@@ -208,7 +215,7 @@ const YoutubeForm = () => {
               <p className='error'>{errors.Date?.message}</p>
             </div>
 
-            <button>Submit</button>
+            <button disabled={!isDirty || !isValid}>Submit</button>
             {/* <button type='button' onClick={handlerGetValues()}>Get Values</button> */}
             <button type='button' onClick={handlerSetValues}>Set Values</button>
         </form>
