@@ -45,7 +45,7 @@ const YoutubeForm = () => {
     // getValues, 
     setValue,
     reset,
-   
+    trigger
    } = form;
 
 
