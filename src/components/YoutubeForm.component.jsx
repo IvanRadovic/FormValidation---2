@@ -21,7 +21,8 @@ const YoutubeForm = () => {
         phoneNumbers:[ "","" ],
         phNumbers:[{ number: ""}],        
         age: 0,
-        dob: new Date()
+        dob: new Date(),
+        mode:"onBlur"
   }
 
     /* --- For fetching user ---  */
@@ -43,7 +44,8 @@ const YoutubeForm = () => {
     watch, 
     // getValues, 
     setValue,
-    reset
+    reset,
+   
    } = form;
 
 
